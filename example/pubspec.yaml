@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   workmanager: 
+    path: ../
 
 dev_dependencies:
   integration_test:

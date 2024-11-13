@@ -224,7 +224,6 @@ class _MyAppState extends State<MyApp> {
                             Workmanager().registerPeriodicTask(
                               simplePeriodic1HourTask,
                               simplePeriodic1HourTask,
-                              flexInterval: Duration(minutes: 15),
                               frequency: Duration(hours: 1),
                             );
                           }
@@ -263,7 +262,7 @@ class _MyAppState extends State<MyApp> {
                             _showNotInitialized();
                             return;
                           }
-                          await Workmanager().registerProcessingTask(
+                          await Workmanager().registerPeriodicTask(
                             iOSBackgroundProcessingTask,
                             iOSBackgroundProcessingTask,
                             initialDelay: Duration(seconds: 20),
@@ -271,18 +270,6 @@ class _MyAppState extends State<MyApp> {
                         }
                       : null,
                 ),
-                SizedBox(height: 16),
-                ElevatedButton(
-                    child: Text("isscheduled (Android)"),
-                    onPressed: Platform.isAndroid
-                        ? () async {
-                            final workInfo =
-                                await Workmanager().isScheduledByUniqueName(
-                              simplePeriodicTask,
-                            );
-                            print('isscheduled = $workInfo');
-                          }
-                        : null),
                 SizedBox(height: 8),
                 Text(
                   "Task cancellation",
@@ -325,11 +312,6 @@ class _MyAppState extends State<MyApp> {
     for (final task in allTasks) {
       _prefsString = '$_prefsString \n$task:\n${prefs.getString(task)}\n';
     }
-
-    if (Platform.isIOS) {
-      Workmanager().printScheduledTasks();
-    }
-
     setState(() {});
   }
 

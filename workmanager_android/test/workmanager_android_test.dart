@@ -14,30 +14,36 @@ void main() {
 
     group('Platform-specific behavior', () {
       test(
-          'should throw UnsupportedError for registerProcessingTask (Android does not support BGTaskScheduler)',
-          () {
-        expect(
-          () => workmanager.registerProcessingTask('task', 'name'),
-          throwsA(isA<UnsupportedError>().having(
-            (e) => e.message,
-            'message',
-            contains('Processing tasks are not supported on Android'),
-          )),
-        );
-      });
+        'should throw UnsupportedError for registerProcessingTask (Android does not support BGTaskScheduler)',
+        () {
+          expect(
+            () => workmanager.registerProcessingTask('task', 'name'),
+            throwsA(
+              isA<UnsupportedError>().having(
+                (e) => e.message,
+                'message',
+                contains('Processing tasks are not supported on Android'),
+              ),
+            ),
+          );
+        },
+      );
 
       test(
-          'should throw UnsupportedError for printScheduledTasks (Android WorkManager does not expose task lists)',
-          () {
-        expect(
-          () => workmanager.printScheduledTasks(),
-          throwsA(isA<UnsupportedError>().having(
-            (e) => e.message,
-            'message',
-            contains('printScheduledTasks is not supported on Android'),
-          )),
-        );
-      });
+        'should throw UnsupportedError for printScheduledTasks (Android WorkManager does not expose task lists)',
+        () {
+          expect(
+            () => workmanager.printScheduledTasks(),
+            throwsA(
+              isA<UnsupportedError>().having(
+                (e) => e.message,
+                'message',
+                contains('printScheduledTasks is not supported on Android'),
+              ),
+            ),
+          );
+        },
+      );
     });
 
     group('Android WorkManager constraints mapping', () {
@@ -136,8 +142,10 @@ void main() {
 
       test('should support Android-specific expedited work policies', () {
         // Test OutOfQuotaPolicy which is Android-specific for expedited jobs
-        expect(() => OutOfQuotaPolicy.runAsNonExpeditedWorkRequest,
-            returnsNormally);
+        expect(
+          () => OutOfQuotaPolicy.runAsNonExpeditedWorkRequest,
+          returnsNormally,
+        );
         expect(() => OutOfQuotaPolicy.dropWorkRequest, returnsNormally);
       });
 
@@ -164,7 +172,7 @@ void main() {
         const specialChars = [
           'task-with-dash',
           'task_with_underscore',
-          'task.with.dots'
+          'task.with.dots',
         ];
 
         // Test that special characters in identifiers are handled appropriately
@@ -244,8 +252,10 @@ void main() {
         expect(oneOffRequest.taskName, 'One Off Task');
         expect(oneOffRequest.tag, 'android-task');
         expect(oneOffRequest.existingWorkPolicy, ExistingWorkPolicy.replace);
-        expect(oneOffRequest.outOfQuotaPolicy,
-            OutOfQuotaPolicy.runAsNonExpeditedWorkRequest);
+        expect(
+          oneOffRequest.outOfQuotaPolicy,
+          OutOfQuotaPolicy.runAsNonExpeditedWorkRequest,
+        );
 
         // PeriodicTaskRequest validation
         final periodicRequest = PeriodicTaskRequest(
@@ -261,8 +271,10 @@ void main() {
         expect(periodicRequest.uniqueName, 'periodic-task');
         expect(periodicRequest.frequencySeconds, 900);
         expect(periodicRequest.flexIntervalSeconds, 300);
-        expect(periodicRequest.existingWorkPolicy,
-            ExistingPeriodicWorkPolicy.keep);
+        expect(
+          periodicRequest.existingWorkPolicy,
+          ExistingPeriodicWorkPolicy.keep,
+        );
       });
     });
   });

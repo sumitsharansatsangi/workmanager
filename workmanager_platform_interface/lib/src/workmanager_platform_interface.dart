@@ -34,10 +34,13 @@ abstract class WorkmanagerPlatform extends PlatformInterface {
   ///
   /// [callbackDispatcher] is the callback function that will be called when background work is executed.
   /// [isInDebugMode] is deprecated and has no effect. Use WorkmanagerDebug handlers instead.
-  Future<void> initialize(Function callbackDispatcher,
-      {@Deprecated(
-          'Use WorkmanagerDebug handlers instead. This parameter has no effect.')
-      bool isInDebugMode = false}) {
+  Future<void> initialize(
+    Function callbackDispatcher, {
+    @Deprecated(
+      'Use WorkmanagerDebug handlers instead. This parameter has no effect.',
+    )
+    bool isInDebugMode = false,
+  }) {
     throw UnimplementedError('initialize() has not been implemented.');
   }
 
@@ -95,7 +98,8 @@ abstract class WorkmanagerPlatform extends PlatformInterface {
     String? tag,
   }) {
     throw UnimplementedError(
-        'registerPeriodicTask() has not been implemented.');
+      'registerPeriodicTask() has not been implemented.',
+    );
   }
 
   /// Register a processing task (iOS only).
@@ -113,7 +117,8 @@ abstract class WorkmanagerPlatform extends PlatformInterface {
     Constraints? constraints,
   }) {
     throw UnimplementedError(
-        'registerProcessingTask() has not been implemented.');
+      'registerProcessingTask() has not been implemented.',
+    );
   }
 
   /// Cancel a task by its unique name.
@@ -134,7 +139,8 @@ abstract class WorkmanagerPlatform extends PlatformInterface {
   /// Check if a task is scheduled by its unique name (Android only).
   Future<bool> isScheduledByUniqueName(String uniqueName) {
     throw UnimplementedError(
-        'isScheduledByUniqueName() has not been implemented.');
+      'isScheduledByUniqueName() has not been implemented.',
+    );
   }
 
   /// Print scheduled tasks for debugging (iOS only).
@@ -149,7 +155,8 @@ class _PlaceholderImplementation extends WorkmanagerPlatform {
   Future<void> initialize(
     Function callbackDispatcher, {
     @Deprecated(
-        'Use WorkmanagerDebug handlers instead. This parameter has no effect.')
+      'Use WorkmanagerDebug handlers instead. This parameter has no effect.',
+    )
     bool isInDebugMode = false,
   }) async {
     throw UnimplementedError(

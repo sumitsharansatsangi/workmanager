@@ -14,30 +14,36 @@ void main() {
 
     group('iOS-specific behavior', () {
       test(
-          'should throw UnsupportedError for cancelByTag (iOS BGTaskScheduler does not support tags)',
-          () {
-        expect(
-          () => workmanager.cancelByTag('testTag'),
-          throwsA(isA<UnsupportedError>().having(
-            (e) => e.message,
-            'message',
-            contains('cancelByTag is not supported on iOS'),
-          )),
-        );
-      });
+        'should throw UnsupportedError for cancelByTag (iOS BGTaskScheduler does not support tags)',
+        () {
+          expect(
+            () => workmanager.cancelByTag('testTag'),
+            throwsA(
+              isA<UnsupportedError>().having(
+                (e) => e.message,
+                'message',
+                contains('cancelByTag is not supported on iOS'),
+              ),
+            ),
+          );
+        },
+      );
 
       test(
-          'should throw UnsupportedError for isScheduledByUniqueName (Android-only functionality)',
-          () {
-        expect(
-          () => workmanager.isScheduledByUniqueName('testTask'),
-          throwsA(isA<UnsupportedError>().having(
-            (e) => e.message,
-            'message',
-            contains('isScheduledByUniqueName is not supported on iOS'),
-          )),
-        );
-      });
+        'should throw UnsupportedError for isScheduledByUniqueName (Android-only functionality)',
+        () {
+          expect(
+            () => workmanager.isScheduledByUniqueName('testTask'),
+            throwsA(
+              isA<UnsupportedError>().having(
+                (e) => e.message,
+                'message',
+                contains('isScheduledByUniqueName is not supported on iOS'),
+              ),
+            ),
+          );
+        },
+      );
     });
 
     group('iOS BGTaskScheduler identifier validation', () {
@@ -156,9 +162,7 @@ void main() {
       });
 
       test('should handle storage constraints for iOS', () {
-        final constraints = Constraints(
-          requiresStorageNotLow: true,
-        );
+        final constraints = Constraints(requiresStorageNotLow: true);
 
         expect(constraints.requiresStorageNotLow, true);
       });
@@ -213,8 +217,10 @@ void main() {
         for (final duration in iosDurations) {
           expect(duration.inSeconds, greaterThanOrEqualTo(0));
           // iOS durations should be reasonable for background task limits
-          expect(duration.inSeconds,
-              lessThanOrEqualTo(Duration(days: 1).inSeconds));
+          expect(
+            duration.inSeconds,
+            lessThanOrEqualTo(Duration(days: 1).inSeconds),
+          );
         }
       });
     });
@@ -267,20 +273,27 @@ void main() {
         final backgroundRefreshRequest = PeriodicTaskRequest(
           uniqueName: 'background-refresh',
           taskName: 'Background Refresh Task',
-          frequencySeconds: Duration(hours: 4)
-              .inSeconds, // Typical iOS background refresh interval
+          frequencySeconds: Duration(
+            hours: 4,
+          ).inSeconds, // Typical iOS background refresh interval
           constraints: Constraints(
             networkType: NetworkType.connected,
             requiresBatteryNotLow: true,
           ),
         );
 
-        expect(backgroundRefreshRequest.frequencySeconds,
-            Duration(hours: 4).inSeconds);
-        expect(backgroundRefreshRequest.constraints?.networkType,
-            NetworkType.connected);
         expect(
-            backgroundRefreshRequest.constraints?.requiresBatteryNotLow, true);
+          backgroundRefreshRequest.frequencySeconds,
+          Duration(hours: 4).inSeconds,
+        );
+        expect(
+          backgroundRefreshRequest.constraints?.networkType,
+          NetworkType.connected,
+        );
+        expect(
+          backgroundRefreshRequest.constraints?.requiresBatteryNotLow,
+          true,
+        );
       });
 
       test('should handle iOS processing task time limits', () {

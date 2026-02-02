@@ -1,22 +1,22 @@
 import 'package:pigeon/pigeon.dart';
 
 // Pigeon configuration
-@ConfigurePigeon(PigeonOptions(
-  dartOut: 'lib/src/pigeon/workmanager_api.g.dart',
-  dartOptions: DartOptions(),
-  kotlinOut:
-      '../workmanager_android/android/src/main/kotlin/dev/fluttercommunity/workmanager/pigeon/WorkmanagerApi.g.kt',
-  kotlinOptions: KotlinOptions(
-    package: 'dev.fluttercommunity.workmanager.pigeon',
+@ConfigurePigeon(
+  PigeonOptions(
+    dartOut: 'lib/src/pigeon/workmanager_api.g.dart',
+    dartOptions: DartOptions(),
+    kotlinOut:
+        '../workmanager_android/android/src/main/kotlin/dev/fluttercommunity/workmanager/pigeon/WorkmanagerApi.g.kt',
+    kotlinOptions: KotlinOptions(
+      package: 'dev.fluttercommunity.workmanager.pigeon',
+    ),
+    swiftOut:
+        '../workmanager_apple/ios/Sources/workmanager_apple/pigeon/WorkmanagerApi.g.swift',
+    copyrightHeader: 'pigeons/copyright.txt',
+    dartPackageName: 'workmanager_platform_interface',
   ),
-  swiftOut:
-      '../workmanager_apple/ios/Sources/workmanager_apple/pigeon/WorkmanagerApi.g.swift',
-  copyrightHeader: 'pigeons/copyright.txt',
-  dartPackageName: 'workmanager_platform_interface',
-))
-
+)
 // Enums - Moved from platform interface for Pigeon compatibility
-
 /// Task status for debugging and monitoring.
 enum TaskStatus {
   /// Task has been scheduled
@@ -167,10 +167,7 @@ class Constraints {
 }
 
 class BackoffPolicyConfig {
-  BackoffPolicyConfig({
-    this.backoffPolicy,
-    this.backoffDelayMillis,
-  });
+  BackoffPolicyConfig({this.backoffPolicy, this.backoffDelayMillis});
 
   BackoffPolicy? backoffPolicy;
   int? backoffDelayMillis;

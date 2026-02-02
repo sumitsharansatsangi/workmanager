@@ -18,13 +18,14 @@ class WorkmanagerAndroid extends WorkmanagerPlatform {
   Future<void> initialize(
     Function callbackDispatcher, {
     @Deprecated(
-        'Use WorkmanagerDebug handlers instead. This parameter has no effect.')
+      'Use WorkmanagerDebug handlers instead. This parameter has no effect.',
+    )
     bool isInDebugMode = false,
   }) async {
     final callback = PluginUtilities.getCallbackHandle(callbackDispatcher);
-    await _api.initialize(InitializeRequest(
-      callbackHandle: callback!.toRawHandle(),
-    ));
+    await _api.initialize(
+      InitializeRequest(callbackHandle: callback!.toRawHandle()),
+    );
   }
 
   @override
@@ -40,22 +41,24 @@ class WorkmanagerAndroid extends WorkmanagerPlatform {
     String? tag,
     OutOfQuotaPolicy? outOfQuotaPolicy,
   }) async {
-    await _api.registerOneOffTask(OneOffTaskRequest(
-      uniqueName: uniqueName,
-      taskName: taskName,
-      inputData: inputData?.cast<String?, Object?>(),
-      initialDelaySeconds: initialDelay?.inSeconds,
-      constraints: constraints,
-      existingWorkPolicy: existingWorkPolicy,
-      backoffPolicy: backoffPolicyDelay != null && backoffPolicy != null
-          ? BackoffPolicyConfig(
-              backoffPolicy: backoffPolicy,
-              backoffDelayMillis: backoffPolicyDelay.inMilliseconds,
-            )
-          : null,
-      tag: tag,
-      outOfQuotaPolicy: outOfQuotaPolicy,
-    ));
+    await _api.registerOneOffTask(
+      OneOffTaskRequest(
+        uniqueName: uniqueName,
+        taskName: taskName,
+        inputData: inputData?.cast<String?, Object?>(),
+        initialDelaySeconds: initialDelay?.inSeconds,
+        constraints: constraints,
+        existingWorkPolicy: existingWorkPolicy,
+        backoffPolicy: backoffPolicyDelay != null && backoffPolicy != null
+            ? BackoffPolicyConfig(
+                backoffPolicy: backoffPolicy,
+                backoffDelayMillis: backoffPolicyDelay.inMilliseconds,
+              )
+            : null,
+        tag: tag,
+        outOfQuotaPolicy: outOfQuotaPolicy,
+      ),
+    );
   }
 
   @override
@@ -72,23 +75,25 @@ class WorkmanagerAndroid extends WorkmanagerPlatform {
     Duration? backoffPolicyDelay,
     String? tag,
   }) async {
-    await _api.registerPeriodicTask(PeriodicTaskRequest(
-      uniqueName: uniqueName,
-      taskName: taskName,
-      frequencySeconds: frequency?.inSeconds ?? 900, // Default 15 minutes
-      flexIntervalSeconds: flexInterval?.inSeconds,
-      inputData: inputData?.cast<String?, Object?>(),
-      initialDelaySeconds: initialDelay?.inSeconds,
-      constraints: constraints,
-      existingWorkPolicy: existingWorkPolicy,
-      backoffPolicy: backoffPolicyDelay != null && backoffPolicy != null
-          ? BackoffPolicyConfig(
-              backoffPolicy: backoffPolicy,
-              backoffDelayMillis: backoffPolicyDelay.inMilliseconds,
-            )
-          : null,
-      tag: tag,
-    ));
+    await _api.registerPeriodicTask(
+      PeriodicTaskRequest(
+        uniqueName: uniqueName,
+        taskName: taskName,
+        frequencySeconds: frequency?.inSeconds ?? 900, // Default 15 minutes
+        flexIntervalSeconds: flexInterval?.inSeconds,
+        inputData: inputData?.cast<String?, Object?>(),
+        initialDelaySeconds: initialDelay?.inSeconds,
+        constraints: constraints,
+        existingWorkPolicy: existingWorkPolicy,
+        backoffPolicy: backoffPolicyDelay != null && backoffPolicy != null
+            ? BackoffPolicyConfig(
+                backoffPolicy: backoffPolicy,
+                backoffDelayMillis: backoffPolicyDelay.inMilliseconds,
+              )
+            : null,
+        tag: tag,
+      ),
+    );
   }
 
   @override

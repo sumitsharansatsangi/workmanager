@@ -22,7 +22,7 @@ android {
         test.java.srcDirs += 'src/test/kotlin'
     }
     defaultConfig {
-        compileSdk 35
+        compileSdk 36
         minSdkVersion 19
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

@@ -1,7 +1,5 @@
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:get_it/get_it.dart';
-
 import 'package:test/test.dart';
 import 'package:workmanager/workmanager.dart';
 
@@ -13,39 +11,45 @@ Future<bool> testCallBackDispatcher(task, inputData) {
   return Future.value(true);
 }
 
-void mySetUpWrapper() {
-  GetIt.I<Workmanager>().initialize(testCallBackDispatcher);
-  GetIt.I<Workmanager>().cancelAll();
-  GetIt.I<Workmanager>().cancelByUniqueName(testTaskName);
+/// This replaces GetIt-based setup completely
+void mySetUpWrapper(Workmanager workmanager) {
+  workmanager.initialize(testCallBackDispatcher);
+  workmanager.cancelAll();
+  workmanager.cancelByUniqueName(testTaskName);
 }
 
 @GenerateMocks([Workmanager])
 void main() {
   group("singleton pattern", () {
-    test("It always return the same workmanager instance", () {
-      final workmanager = Workmanager();
+    test("It always returns the same Workmanager instance", () {
+      final workmanager1 = Workmanager();
       final workmanager2 = Workmanager();
 
-      expect(workmanager == workmanager2, true);
+      expect(identical(workmanager1, workmanager2), true);
     });
   });
 
   group("mocked workmanager", () {
-    setUpAll(() {
-      GetIt.I.registerSingleton<Workmanager>(MockWorkmanager());
-    });
-    test("cancelAll - It calls methods on the mocked class", () {
-      mySetUpWrapper();
+    late MockWorkmanager mockWorkmanager;
 
-      verify(GetIt.I<Workmanager>().initialize(testCallBackDispatcher));
-      verify(GetIt.I<Workmanager>().cancelAll());
+    setUp(() {
+      mockWorkmanager = MockWorkmanager();
     });
 
-    test("cancelByUniqueName - It calls methods on the mocked class", () {
-      mySetUpWrapper();
+    test("cancelAll - calls methods on mocked Workmanager", () {
+      mySetUpWrapper(mockWorkmanager);
 
-      verify(GetIt.I<Workmanager>().initialize(testCallBackDispatcher));
-      verify(GetIt.I<Workmanager>().cancelByUniqueName(testTaskName));
+      verify(mockWorkmanager.initialize(testCallBackDispatcher)).called(1);
+      verify(mockWorkmanager.cancelAll()).called(1);
+    });
+
+    test("cancelByUniqueName - calls methods on mocked Workmanager", () {
+      mySetUpWrapper(mockWorkmanager);
+
+      verify(mockWorkmanager.initialize(testCallBackDispatcher)).called(1);
+      verify(
+        mockWorkmanager.cancelByUniqueName(testTaskName),
+      ).called(1);
     });
   });
 }
